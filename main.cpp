@@ -1,5 +1,8 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/ext/vector_float3.hpp>
+#include <glm/fwd.hpp>
+#include <iterator>
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -71,8 +74,6 @@ int main()
     // glEnable(GL_DEBUG_OUTPUT);
     // glDebugMessageCallback(MessageCallback, 0);
 
-    Shader shaderSuelo("shaders/DefaultCube.vert", "shaders/Suelo.frag", "outColor");
-
     Camera camera(glm::vec3(0.0f, 5.0f, -17.0f), glm::vec3(90.f, -5.f, 0.f));
     CameraController::setCamera(&camera);
     glfwSetCursorPosCallback(window, CameraController::mouseCallback);
@@ -87,9 +88,9 @@ int main()
 
     Cube cubo[CUBE_COUNT];
     for(int i = 0; i < CUBE_COUNT; i++){
-        int randX;
-        int randY;
-        int randZ;
+        float randX;
+        float randY;
+        float randZ;
 
         randX = (rand() % 100) - 50;    
         randY = (rand() % 20);    
@@ -104,11 +105,18 @@ int main()
         randY = (rand() % 360);    
         randZ = (rand() % 360);    
         cubo[i].setRotation(glm::vec3(randX, randY, randZ));
+
+        randX = (float)rand() / float(RAND_MAX);    
+        randY = (float)rand() / float(RAND_MAX);    
+        randZ = (float)rand() / float(RAND_MAX);    
+        std::cout << randX << std::endl;
+        cubo[i].setColor(glm::vec3(randX, randY, randZ));
     }
 
     Cube cubo1(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     Cube cubo2(glm::vec3(0.0f, 15.0f, -17.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     Cube suelo(glm::vec3(0.f, 0.f, 0.f), glm::vec3(50.f, 1.0f, 50.f), glm::vec3(0.f, 0.f, 0.f));
+    suelo.setColor(glm::vec3(.2f, .2f, .2f));
 
     while(running){
         glfwPollEvents();
@@ -129,7 +137,7 @@ int main()
 
         cubo1.draw(view, projection);
         cubo2.draw(view, projection);
-        suelo.draw(view, projection, &shaderSuelo);
+        suelo.draw(view, projection);
 
         glfwSwapBuffers(window);
     }

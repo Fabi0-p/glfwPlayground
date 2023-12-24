@@ -16,6 +16,8 @@ class Cube{
         glm::vec3 scale;
         glm::vec3 rotation;
 
+        glm::vec3 color = glm::vec3(1.f, 0.5f, 1.f);
+
         glm::mat4 model;
 
         static GLuint vao;
@@ -36,9 +38,11 @@ class Cube{
         void setPos(glm::vec3 _pos);
         void setScale(glm::vec3 _scale);
         void setRotation(glm::vec3 _rotation);
+        void setColor(glm::vec3 _color){color = _color;}
         glm::vec3 getPos(){return pos;}
         glm::vec3 getScale(){return scale;}
         glm::vec3 getRotation(){return rotation;}
+        glm::vec3 getColor(){return color;}
 
         void move(glm::vec3 vec);
         void rotate(glm::vec3 _rotation);

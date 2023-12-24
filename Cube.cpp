@@ -73,6 +73,7 @@ void Cube::draw(glm::mat4 view, glm::mat4 projection, Shader *shader){
     shader->setMat4("model", model);
     shader->setMat4("view", view);
     shader->setMat4("projection", projection);
+    shader->setVec3("color", color);
 
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
