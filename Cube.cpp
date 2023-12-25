@@ -12,24 +12,46 @@ GLuint Cube::vao;
 
 void Cube::init(){
     defaultShader.create("shaders/DefaultCube.vert", "shaders/DefaultCube.frag", "outColor");
-        float vertices[] = {
+    float vertices[] = {
+        // Cara superior [0]
         1, 1, 1,
-        1, 1, -1,
-        1, -1, -1,
-        1, -1, 1,
         -1, 1, 1,
         -1, 1, -1,
+        1, 1, -1,
+        // Cara inferior [4]
+        1, -1, 1,
+        -1,-1, 1,
+        -1,-1, -1,
+        1, -1, -1,
+        // Cara derecha [8]
+        1, 1, 1,
+        1, -1, 1,
+        1, -1, -1,
+        1, 1, -1,
+        // Cara izquierda [12]
+        -1, 1, 1,
+        -1, -1, 1,
         -1, -1, -1,
-        -1, -1, 1
+        -1, 1, -1,
+        // Cara frontal [16] 
+        1, 1, 1,
+        1, -1, 1,
+        -1, -1, 1,
+        -1, 1, 1,
+        // Cara trasera [20]
+        1, 1, -1,
+        1, -1, -1,
+        -1, -1, -1,
+        -1, 1, -1
     };
 
     unsigned int indices[] = {
-        0, 1, 2, 0, 3, 2, // Cara derecha
-        0, 1, 5, 0, 4, 5, // Cara superior
-        0, 3, 7, 0, 4, 7, // Cara trasera
-        5, 4, 6, 4, 6, 7, // Cara izquierda
-        1, 2, 5, 2, 5, 6, // Cara frontal
-        2, 3, 6, 3, 6, 7 // Cara inferior
+        0, 1, 2, 0, 3, 2, // Cara superior
+        4, 5, 6, 4, 7, 6, // Cara inferior
+        8, 9, 10, 8, 11, 10, // Cara derecha
+        12, 13, 14, 12, 15, 14, // Cara izquierda
+        16, 17, 18, 16, 19, 18, // Cara frontal
+        20, 21, 22, 20, 23, 22 // Cara trasera
     };
 
     glGenVertexArrays(1, &vao);

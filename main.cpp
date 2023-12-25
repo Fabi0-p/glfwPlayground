@@ -117,6 +117,7 @@ int main()
     Cube cubo2(glm::vec3(0.0f, 15.0f, -17.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     Cube suelo(glm::vec3(0.f, 0.f, 0.f), glm::vec3(50.f, 1.0f, 50.f), glm::vec3(0.f, 0.f, 0.f));
     suelo.setColor(glm::vec3(.2f, .2f, .2f));
+    cubo1.setColor(glm::vec3(1.f, 1.f, 1.f));
 
     while(running){
         glfwPollEvents();
