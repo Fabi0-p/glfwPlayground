@@ -14,35 +14,35 @@ void Cube::init(){
     defaultShader.create("shaders/DefaultCube.vert", "shaders/DefaultCube.frag", "outColor");
     float vertices[] = {
         // Cara superior [0]
-        1, 1, 1,
-        -1, 1, 1,
-        -1, 1, -1,
-        1, 1, -1,
+        1, 1, 1, 0, 1, 0,
+        -1, 1, 1, 0, 1, 0,
+        -1, 1, -1, 0, 1, 0,
+        1, 1, -1, 0, 1, 0,
         // Cara inferior [4]
-        1, -1, 1,
-        -1,-1, 1,
-        -1,-1, -1,
-        1, -1, -1,
+        1, -1, 1, 0, -1, 0,
+        -1,-1, 1, 0, -1, 0,
+        -1,-1, -1, 0, -1, 0,
+        1, -1, -1, 0, -1, 0,
         // Cara derecha [8]
-        1, 1, 1,
-        1, -1, 1,
-        1, -1, -1,
-        1, 1, -1,
+        1, 1, 1, 1, 0, 0,
+        1, -1, 1, 1, 0, 0,
+        1, -1, -1, 1, 0, 0,
+        1, 1, -1, 1, 0, 0,
         // Cara izquierda [12]
-        -1, 1, 1,
-        -1, -1, 1,
-        -1, -1, -1,
-        -1, 1, -1,
+        -1, 1, 1, -1, 0, 0,
+        -1, -1, 1, -1, 0, 0,
+        -1, -1, -1, -1, 0, 0,
+        -1, 1, -1, -1, 0, 0,
         // Cara frontal [16] 
-        1, 1, 1,
-        1, -1, 1,
-        -1, -1, 1,
-        -1, 1, 1,
+        1, 1, 1, 0, 0, 1,
+        1, -1, 1, 0, 0, 1,
+        -1, -1, 1, 0, 0, 1,
+        -1, 1, 1, 0, 0, 1,
         // Cara trasera [20]
-        1, 1, -1,
-        1, -1, -1,
-        -1, -1, -1,
-        -1, 1, -1
+        1, 1, -1, 0, 0, -1,
+        1, -1, -1, 0, 0, -1,
+        -1, -1, -1, 0, 0, -1,
+        -1, 1, -1, 0, 0, -1
     };
 
     unsigned int indices[] = {
@@ -69,8 +69,10 @@ void Cube::init(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3* sizeof(float)));
+    glEnableVertexAttribArray(1);
 }
 
 Cube::Cube(): Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f)){}
@@ -96,6 +98,7 @@ void Cube::draw(glm::mat4 view, glm::mat4 projection, Shader *shader){
     shader->setMat4("view", view);
     shader->setMat4("projection", projection);
     shader->setVec3("color", color);
+    shader->setVec3("cubePos", pos);
 
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }

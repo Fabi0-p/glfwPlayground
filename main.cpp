@@ -96,7 +96,6 @@ int main()
         randY = (rand() % 20);    
         randZ = (rand() % 100) - 50;            
         cubo[i].setPos(glm::vec3(randX, randY, randZ));
-        // std::cout << "Pos[" << i << "]: randX: " << randX << "- randY: " randY
 
         randX = (rand() % 100) / 50. + 0.2; 
         cubo[i].setScale(glm::vec3(randX, randX, randX));
@@ -109,14 +108,15 @@ int main()
         randX = (float)rand() / float(RAND_MAX);    
         randY = (float)rand() / float(RAND_MAX);    
         randZ = (float)rand() / float(RAND_MAX);    
-        std::cout << randX << std::endl;
         cubo[i].setColor(glm::vec3(randX, randY, randZ));
     }
 
-    Cube cubo1(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    Shader shaderCubo1("shaders/DefaultCube.vert", "shaders/FlatCube.frag", "outColor");
+
+    Cube cubo1(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f));
     Cube cubo2(glm::vec3(0.0f, 15.0f, -17.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     Cube suelo(glm::vec3(0.f, 0.f, 0.f), glm::vec3(50.f, 1.0f, 50.f), glm::vec3(0.f, 0.f, 0.f));
-    suelo.setColor(glm::vec3(.2f, .2f, .2f));
+    suelo.setColor(glm::vec3(.1f, .1f, .1f));
     cubo1.setColor(glm::vec3(1.f, 1.f, 1.f));
 
     while(running){
@@ -125,10 +125,10 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             running = false;
         
-        glClearColor(0.0f, 0.7f, 1.0f, 1.0f);
+        // glClearColor(0.0f, 0.7f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
-        cubo1.rotate(glm::vec3(0.05f, 0.05f, 0.05f));
         CameraController::update();
         view = camera.getView();
 
@@ -136,7 +136,7 @@ int main()
             cubo[i].draw(view, projection);
         }
 
-        cubo1.draw(view, projection);
+        cubo1.draw(view, projection, &shaderCubo1);
         cubo2.draw(view, projection);
         suelo.draw(view, projection);
 
