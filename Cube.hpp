@@ -19,6 +19,7 @@ class Cube{
         glm::vec3 color = glm::vec3(1.f, 0.5f, 1.f);
 
         glm::mat4 model;
+        glm::mat4 normalModel;
 
         static GLuint vao;
         static Shader defaultShader;

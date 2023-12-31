@@ -5,6 +5,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/fwd.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/matrix.hpp>
 
 
 Shader Cube::defaultShader;
@@ -82,12 +83,7 @@ Cube::Cube(glm::vec3 _pos, glm::vec3 _scale, glm::vec3 _rotation){
     scale = _scale;
     rotation = _rotation;    
 
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, pos);
-    model = glm::scale(model, scale);
-    model = glm::rotate(model, rotation.x, glm::vec3(1.f, 0.f, 0.f));
-    model = glm::rotate(model, rotation.y, glm::vec3(0.f, 1.f, 0.f));
-    model = glm::rotate(model, rotation.z, glm::vec3(0.f, 0.f, 1.f));
+    updateModelView();
 }
 
 void Cube::draw(glm::mat4 view, glm::mat4 projection, Shader *shader){
@@ -97,6 +93,7 @@ void Cube::draw(glm::mat4 view, glm::mat4 projection, Shader *shader){
     shader->setMat4("model", model);
     shader->setMat4("view", view);
     shader->setMat4("projection", projection);
+    shader->setMat4("normalModel", normalModel);
     shader->setVec3("color", color);
     shader->setVec3("cubePos", pos);
 
@@ -139,6 +136,8 @@ void Cube::updateModelView(){
     model = glm::rotate(model, rotation.x, glm::vec3(1.f, 0.f, 0.f));
     model = glm::rotate(model, rotation.y, glm::vec3(0.f, 1.f, 0.f));
     model = glm::rotate(model, rotation.z, glm::vec3(0.f, 0.f, 1.f));
+
+    normalModel = glm::transpose(glm::inverse(model));
 }
 
 #endif
