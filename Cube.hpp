@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,7 +19,7 @@ class Cube : public Object{
 
         static GLuint vao;
         static Shader defaultShader;
-
+        static glm::vec3 lightSource;
 
     public:
         Cube();
@@ -29,6 +30,9 @@ class Cube : public Object{
         );
 
         static void init();
+
+        static glm::vec3 getLightSource();
+        static void setLightSource(glm::vec3 _lightSource);
 
         void setColor(glm::vec3 _color){color = _color;}
         glm::vec3 getColor(){return color;}

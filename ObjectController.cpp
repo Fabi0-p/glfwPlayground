@@ -26,7 +26,7 @@ Object* ObjectController::getObject(){
     return object;
 }
 
-void ObjectController::mouseCallback(GLFWwindow* window, double xPos, double yPos){
+void ObjectController::mouseController(double xPos, double yPos){
     double offsetX = xPos - lastXPos;
     double offsetY = lastYPos - yPos;
 
@@ -39,7 +39,7 @@ void ObjectController::mouseCallback(GLFWwindow* window, double xPos, double yPo
     if(object != NULL) object->rotate(glm::vec3(offsetX, offsetY, 0.0));
 }
 
-void ObjectController::keyboardCallback(GLFWwindow *window, int key, int scancode, int action, int mods){
+void ObjectController::keyboardController(int key, int scancode, int action, int mods){
     
     if(key == GLFW_KEY_W && action == GLFW_PRESS) movement += glm::vec3(1.f, 0.f, 0.f);
     if(key == GLFW_KEY_A && action == GLFW_PRESS) movement += glm::vec3(0.f, 0.f, -1.f);

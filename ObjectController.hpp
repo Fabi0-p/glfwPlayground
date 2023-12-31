@@ -15,8 +15,8 @@ class ObjectController{
     public:
         static void setObject(Object* _object);
         static Object* getObject();
-        static void mouseCallback(GLFWwindow* window, double xPos, double yPos);
-        static void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+        static void mouseController(double xPos, double yPos);
+        static void keyboardController(int key, int scancode, int action, int mods);
         static void update();
         // glm::mat4 getView(){return camera->getView(); }
 };

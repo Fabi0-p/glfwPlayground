@@ -3,10 +3,12 @@
 
 #include "Cube.hpp"
 #include "Object.hpp"
+#include <glm/fwd.hpp>
 
 
 Shader Cube::defaultShader;
 GLuint Cube::vao;
+glm::vec3 Cube::lightSource;
 
 void Cube::init(){
     defaultShader.create("shaders/DefaultCube.vert", "shaders/DefaultCube.frag", "outColor");
@@ -73,6 +75,14 @@ void Cube::init(){
     glEnableVertexAttribArray(1);
 }
 
+void Cube::setLightSource(glm::vec3 _lightSource){
+    lightSource = _lightSource;
+}
+
+glm::vec3 Cube::getLightSource(){
+    return lightSource;
+}
+
 Cube::Cube(): Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f)){}
 
 Cube::Cube(glm::vec3 _pos, glm::vec3 _scale, glm::vec3 _rotation): Object(_pos, _scale, _rotation){}
@@ -86,6 +96,7 @@ void Cube::draw(glm::mat4 view, glm::mat4 projection, Shader *shader){
     shader->setMat4("projection", projection);
     shader->setMat4("normalModel", normalModel);
     shader->setVec3("color", color);
+    shader->setVec3("lightSource", lightSource);
     shader->setVec3("cubePos", pos);
 
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);

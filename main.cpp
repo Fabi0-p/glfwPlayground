@@ -15,39 +15,12 @@
 #include "ObjectController.hpp"
 #include "Cube.hpp"
 
+#include "main.hpp"
+
 #define CUBE_COUNT 300
 
-void GLAPIENTRY MessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam ){
-    fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
-            type, severity, message);
-}
-
-const char* vertexGroundShaderSrc = R"glsl(
-    #version 330
-    
-    layout (location = 0) in vec3 pos;
-    uniform mat4 model;
-    uniform mat4 view;
-    uniform mat4 projection;
-
-
-    void main(){
-        gl_Position = projection * view * model * vec4(pos, 1.0);
-    }
-)glsl";
-
-const char* fragmentGroundShaderSrc = R"glsl(
-    #version 330
-
-    out vec4 outColor;
-
-    float dist;
-
-    void main(){
-        outColor = vec4(0.2, 0.2, 0.2, 1.0);
-    }
-)glsl";
+Camera camera(glm::vec3(0.0f, 5.0f, -17.0f), glm::vec3(90.f, -5.f, 0.f));
+Cube lightCube(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 int main()
 {
@@ -74,10 +47,10 @@ int main()
     // glEnable(GL_DEBUG_OUTPUT);
     // glDebugMessageCallback(MessageCallback, 0);
 
-    Camera camera(glm::vec3(0.0f, 5.0f, -17.0f), glm::vec3(90.f, -5.f, 0.f));
     ObjectController::setObject(&camera);
-    glfwSetCursorPosCallback(window, ObjectController::mouseCallback);
-    glfwSetKeyCallback(window, ObjectController::keyboardCallback);
+    controlledObject = 0;
+    glfwSetCursorPosCallback(window, mouseCallback);
+    glfwSetKeyCallback(window, keyboardCallback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
@@ -111,13 +84,13 @@ int main()
         cubo[i].setColor(glm::vec3(randX, randY, randZ));
     }
 
-    Shader shaderCubo1("shaders/DefaultCube.vert", "shaders/FlatCube.frag", "outColor");
+    Shader shaderLightCube("shaders/DefaultCube.vert", "shaders/FlatCube.frag", "outColor");
 
-    Cube cubo1(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f));
     Cube cubo2(glm::vec3(0.0f, 15.0f, -17.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     Cube suelo(glm::vec3(0.f, 0.f, 0.f), glm::vec3(50.f, 1.0f, 50.f), glm::vec3(0.f, 0.f, 0.f));
     suelo.setColor(glm::vec3(1.f, .5f, .5f));
-    cubo1.setColor(glm::vec3(1.f, 1.f, 1.f));
+    lightCube.setColor(glm::vec3(1.f, 1.f, 1.f));
+    Cube::setLightSource(lightCube.getPos());
 
     while(running){
         glfwPollEvents();
@@ -135,8 +108,8 @@ int main()
         for(int i = 0; i < CUBE_COUNT; i++){
             cubo[i].draw(view, projection);
         }
-
-        cubo1.draw(view, projection, &shaderCubo1);
+        Cube::setLightSource(lightCube.getPos());
+        lightCube.draw(view, projection, &shaderLightCube);
         cubo2.draw(view, projection);
         suelo.draw(view, projection);
 
@@ -144,4 +117,24 @@ int main()
     }
 
     glfwTerminate();
+}
+
+
+void keyboardCallback(GLFWwindow *window, int key, int scancode, int action, int mods){
+    if(key == GLFW_KEY_TAB && action == GLFW_PRESS){
+        if(controlledObject == 0){
+            ObjectController::setObject(&lightCube);
+            lightCube.setRotation(camera.getRotation());
+            controlledObject = 1;
+        }
+        else if(controlledObject == 1){
+            ObjectController::setObject(&camera);
+            controlledObject = 0;
+        }
+    }
+    ObjectController::keyboardController(key, scancode, action, mods);
+}
+
+void mouseCallback(GLFWwindow* window, double xPos, double yPos){
+    if(controlledObject == 0) ObjectController::mouseController(xPos, yPos);
 }
