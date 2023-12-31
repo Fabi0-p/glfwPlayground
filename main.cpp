@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include "Camera.hpp"
-#include "CameraController.hpp"
+#include "ObjectController.hpp"
 #include "Cube.hpp"
 
 #define CUBE_COUNT 300
@@ -75,9 +75,9 @@ int main()
     // glDebugMessageCallback(MessageCallback, 0);
 
     Camera camera(glm::vec3(0.0f, 5.0f, -17.0f), glm::vec3(90.f, -5.f, 0.f));
-    CameraController::setCamera(&camera);
-    glfwSetCursorPosCallback(window, CameraController::mouseCallback);
-    glfwSetKeyCallback(window, CameraController::keyboardCallback);
+    ObjectController::setObject(&camera);
+    glfwSetCursorPosCallback(window, ObjectController::mouseCallback);
+    glfwSetKeyCallback(window, ObjectController::keyboardCallback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
@@ -129,7 +129,7 @@ int main()
         glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
-        CameraController::update();
+        ObjectController::update();
         view = camera.getView();
 
         for(int i = 0; i < CUBE_COUNT; i++){

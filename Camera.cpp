@@ -3,12 +3,6 @@
 
 #include"Camera.hpp"
 #include "Object.hpp"
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/ext/vector_float3.hpp>
-#include <glm/ext/vector_float4.hpp>
-#include <glm/fwd.hpp>
-#include <glm/geometric.hpp>
-#include <glm/trigonometric.hpp>
 
 Camera::Camera(): Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)){}
 Camera::Camera(glm::vec3 _pos): Camera(_pos, glm::vec3(0.0f, 0.0f, 0.0f)){}

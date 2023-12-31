@@ -3,10 +3,6 @@
 
 #include "Cube.hpp"
 #include "Object.hpp"
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/fwd.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/matrix.hpp>
 
 
 Shader Cube::defaultShader;
