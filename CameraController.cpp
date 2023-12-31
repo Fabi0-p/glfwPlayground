@@ -57,7 +57,7 @@ void CameraController::keyboardCallback(GLFWwindow *window, int key, int scancod
 }
 
 void CameraController::update(){
-    float angle = glm::radians(camera->getAngles().x);
+    float angle = glm::radians(camera->getRotation().x);
     float posX = movement.x * cos(angle) - movement.z * sin(angle);
     float posY = movement.y;
     float posZ = movement.x * sin(angle) + movement.z * cos(angle);

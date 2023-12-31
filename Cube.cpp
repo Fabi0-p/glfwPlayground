@@ -2,6 +2,7 @@
 #define CUBE_C
 
 #include "Cube.hpp"
+#include "Object.hpp"
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/fwd.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -78,13 +79,7 @@ void Cube::init(){
 
 Cube::Cube(): Cube(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f)){}
 
-Cube::Cube(glm::vec3 _pos, glm::vec3 _scale, glm::vec3 _rotation){
-    pos = _pos;
-    scale = _scale;
-    rotation = _rotation;    
-
-    updateModelView();
-}
+Cube::Cube(glm::vec3 _pos, glm::vec3 _scale, glm::vec3 _rotation): Object(_pos, _scale, _rotation){}
 
 void Cube::draw(glm::mat4 view, glm::mat4 projection, Shader *shader){
     glBindVertexArray(vao);
@@ -102,42 +97,6 @@ void Cube::draw(glm::mat4 view, glm::mat4 projection, Shader *shader){
 
 void Cube::draw(glm::mat4 view, glm::mat4 projection){
     draw(view, projection, &defaultShader);
-}
-
-void Cube::move(glm::vec3 vec){
-    pos += vec;
-    updateModelView();
-}
-
-void Cube::rotate(glm::vec3 _rotation){
-    rotation += _rotation;
-    updateModelView();
-}
-
-void Cube::setPos(glm::vec3 _pos){
-    pos = _pos;
-    updateModelView();
-}
-
-void Cube::setScale(glm::vec3 _scale){
-    scale = _scale;
-    updateModelView();
-}
-
-void Cube::setRotation(glm::vec3 _rotation){
-    rotation = _rotation;
-    updateModelView();
-}
-
-void Cube::updateModelView(){
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, pos);
-    model = glm::scale(model, scale);
-    model = glm::rotate(model, rotation.x, glm::vec3(1.f, 0.f, 0.f));
-    model = glm::rotate(model, rotation.y, glm::vec3(0.f, 1.f, 0.f));
-    model = glm::rotate(model, rotation.z, glm::vec3(0.f, 0.f, 1.f));
-
-    normalModel = glm::transpose(glm::inverse(model));
 }
 
 #endif
